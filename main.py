@@ -24,7 +24,7 @@ def bfs(n):
             if queens[n - 1] != -1:  # select 한 것이 Goal 일 때
                 for i in range(n):
                     queens[i] += 1  # index로 계산했기 때문에 행 번호를 0시작에서 1시작으로 변경
-                answer = ", ".join(map(str, queens))  # 리스트를 문자열로 형변환 및 출력형식 맞추기
+                answer = " ".join(map(str, queens))  # 리스트를 문자열로 변환 및 출력형식 맞추기
                 f.write(answer)
                 f.close()
                 return
@@ -68,35 +68,47 @@ def hc(n):
     elif n < 4:
         f.write('no solution')
     else:
-        queens = random.sample(range(n), n)  # 각 열마다 행이 겹치지 않는 랜덤한 위치에 queen 생성
-        queens = [5, 4, 1, 3, 0, 2]
+        while (True):
+            # 각 열에 랜덤한 위치에 queen 생성(성공률이 아래 방법보다 떨어짐)
+            # queens = []
+            # for i in range(n):
+            #     queens.append(random.randrange(n))
 
-        for move in range(4):
-            h = calculate(queens)
-            hBoard = [[n * 3] * n for i in range(n)]
-            for col in range(n):
-                for row in range(n):
-                    tmp = queens[:]
-                    tmp[col] = row
-                    hBoard[row][col] = calculate(tmp)
-            for col, row in enumerate(queens):
-                hBoard[row][col] = 9
+            # 각 열마다 행이 서로 겹치지 않는 랜덤한 위치에 queen 생성(위 방법보다 성공률이 약 14%로 이론에 가까움)
+            queens = random.sample(range(n), n)
 
-            print('queens=',queens,' h=',h)
-            print("\n".join(map(str, hBoard)))
+            for move in range(4):
+                h = calculate(queens)
+                hBoard = [[n * 3] * n for i in range(n)]
+                for col in range(n):
+                    for row in range(n):
+                        tmp = queens[:]
+                        tmp[col] = row
+                        hBoard[row][col] = calculate(tmp)
 
-            tmpRow = hBoard.index(min(hBoard))
-            tmpCol = hBoard[tmpRow].index(min(hBoard[tmpRow]))
+                        if hBoard[row][col] == 0:
+                            for i in range(n):
+                                tmp[i] += 1  # index로 계산했기 때문에 행 번호를 0시작에서 1시작으로 변경
+                            answer = " ".join(map(str, tmp))  # 리스트를 문자열로 변환 및 출력형식 맞추기
+                            f.write(answer)
+                            f.close()
+                            return
 
-            queens[tmpCol] = tmpRow
+                for col, row in enumerate(queens):
+                    hBoard[row][col] = n * 3
 
+                minH = min(map(min, hBoard))
+                minPosList = []
+                for row, lis in enumerate(hBoard):
+                    for col, tmpH in enumerate(lis):
+                        if tmpH == minH:
+                            minPosList.append((row, col))
+                tmpIndex = random.randint(0, len(minPosList) - 1)
+                tmpRow, tmpCol = minPosList[tmpIndex]
 
-        print(queens)
-        print(hBoard)
-        # print("\n".join(map(str, hBoard)))
-        print(h)
-
-    f.close()
+                if minH > h:
+                    break
+                queens[tmpCol] = tmpRow
 
 
 def csp(n):
@@ -119,12 +131,14 @@ if __name__ == '__main__':
         func = tmp[1]
         N = int(tmp[0])
 
+        if N < 1:
+            print('Input number error')
         if func == 'bfs':
             bfs(N)
         elif func == 'hc':
             hc(N)
         # elif func == 'csp':
         #     csp(N)
-        # else:
-        #     print('Input error')
+        else:
+            print('Input function error')
     f.close()
