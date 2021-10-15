@@ -1,4 +1,4 @@
-5 bfs
+6 bfs
 2 csp
-6 hc
-8 csp
+8 hc
+25 csp
