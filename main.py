@@ -169,7 +169,6 @@ def csp(n):
             tmp[i] += 1  # 편의상 index로 계산했기 때문에 행 시작번호를 0에서 1로 변경
         answer = " ".join(map(str, tmp))  # 리스트를 문자열로 변환 및 출력형식 맞추기
         f.write(answer)
-        print(answer)
         f.close()
 
 
