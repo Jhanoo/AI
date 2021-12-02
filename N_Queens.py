@@ -173,7 +173,7 @@ def csp(n):
 
 
 if __name__ == '__main__':
-    f = open('input.txt', 'r')
+    f = open('N_Queens_input.txt', 'r')
     for i in f:
         tmp = i.strip().split()
         func = tmp[1]
