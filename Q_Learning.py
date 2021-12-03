@@ -1,6 +1,6 @@
 import random
 
-M = ''  # Map
+M = ''  # Map 5x5 size
 r = [[-1] * 25 for _ in range(25)]  # action에 대한 reward
 Q = [[0] * 25 for _ in range(25)]  # Q table
 
